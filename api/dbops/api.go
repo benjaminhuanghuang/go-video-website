@@ -1,7 +1,12 @@
 package dbops
 
 import (
+	"database/sql"
 	"log"
+	"time"
+
+	"../defs"
+	"../utils"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,8 +16,11 @@ func AddUserCredential(loginName string, pwd string) error {
 	if err != nil {
 		return err
 	}
-	stmtInsert.Exec(loginName, pwd)
-	stmtInsert.Close()
+	_, err = stmtInsert.Exec(loginName, pwd)
+	if err != nil {
+		return err
+	}
+	defer stmtInsert.Close()
 	return nil
 }
 
@@ -23,7 +31,10 @@ func GetUserCredential(loginName string) (string, error) {
 		return "", err
 	}
 	var pwd string
-	stmtOut.QueryRow(loginName).Scan(&pwd)
+	err = stmtOut.QueryRow(loginName).Scan(&pwd)
+	if err != nil && err != sql.ErrNoRows {
+		return "", err
+	}
 	stmtOut.Close()
 	return pwd, nil
 }
@@ -34,7 +45,31 @@ func DeleteUser(loginName string, pwd string) error {
 		log.Printf("Delete user error: %s", err)
 		return err
 	}
-	stmtDel.Exec(loginName, pwd)
+	_, err = stmtDel.Exec(loginName, pwd)
+	if err != nil {
+		return err
+	}
 	stmtDel.Close()
 	return nil
+}
+
+func AddNewVideo(aid int, name string) (*defs.VideoInfo, error) {
+	vid, err := utils.NewUUID()
+	if err != nil {
+		return nil, err
+	}
+
+	t := time.Now()
+	ctime := t.Format("Jan 02 2006, 15:04:06")
+	stmtInsert, err := dbConn.Prepare("INSERT INTO video_info (id, author_id, name, display_ctime) VALUES (?, ?, ?, ?)")
+	if err != nil {
+		return nil, err
+	}
+	_, err = stmtInsert.Exec(vid, aid, name, ctime)
+	if err != nil {
+		return nil, err
+	}
+	res := &defs.VideoInfo{Id: vid, AuthorId: aid, Name: name, DisplyCreatTime: ctime}
+	defer stmtInsert.Close()
+	return res, nil
 }
