@@ -7,7 +7,7 @@ import (
 )
 
 func AddUserCredential(loginName string, pwd string) error {
-	stmtInsert, err := dbConn.Prepare("INSERT INT users (login_name, pwd) VALUES (?, ?)")
+	stmtInsert, err := dbConn.Prepare("INSERT INTO users (login_name, pwd) VALUES (?, ?)")
 	if err != nil {
 		return err
 	}
@@ -17,7 +17,7 @@ func AddUserCredential(loginName string, pwd string) error {
 }
 
 func GetUserCredential(loginName string) (string, error) {
-	stmtOut, err := dbConn.Prepare("SELECT users FROM users WHERE login_name=?")
+	stmtOut, err := dbConn.Prepare("SELECT pwd FROM users WHERE login_name=?")
 	if err != nil {
 		log.Printf("%s", err)
 		return "", err
@@ -29,7 +29,7 @@ func GetUserCredential(loginName string) (string, error) {
 }
 
 func DeleteUser(loginName string, pwd string) error {
-	stmtDel, err := dbConn.Prepare("DELETE users FROM users WHERE login_name=? AND pwd=?")
+	stmtDel, err := dbConn.Prepare("DELETE FROM users WHERE login_name=? AND pwd=?")
 	if err != nil {
 		log.Printf("Delete user error: %s", err)
 		return err
