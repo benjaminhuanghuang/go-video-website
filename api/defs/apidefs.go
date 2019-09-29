@@ -11,3 +11,10 @@ type VideoInfo struct {
 	Name            string
 	DisplyCreatTime string
 }
+
+type Comment struct {
+	Id      string
+	Author  string
+	VideoId string
+	Content string
+}
