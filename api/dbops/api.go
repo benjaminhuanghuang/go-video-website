@@ -73,3 +73,40 @@ func AddNewVideo(aid int, name string) (*defs.VideoInfo, error) {
 	defer stmtInsert.Close()
 	return res, nil
 }
+func GetVideoInfo(vid string) (*defs.VideoInfo, error) {
+	stmtOut, err := dbConn.Prepare("SELECT author_id, name, display_ctime FROM video_info WHERE id=?")
+	if err != nil {
+		log.Printf("GetVideoInfo %s", err)
+		return nil, err
+	}
+
+	var aid int
+	var dct string
+	var name string
+	err = stmtOut.QueryRow(vid).Scan(&aid, &name, &dct)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	defer stmtOut.Close()
+
+	res := &defs.VideoInfo{Id: vid, AuthorId: aid, Name: name, DisplyCreatTime: dct}
+	return res, nil
+}
+
+func DeleteVideoInfo(vid string) error {
+	stmtDel, err := dbConn.Prepare("DELETE FROM video_info WHERE id = ?")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmtDel.Exec(vid)
+	if err != nil {
+		return err
+	}
+	defer stmtDel.Close()
+	return nil
+}
