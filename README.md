@@ -7,6 +7,7 @@ RESTful API + Front end
 - native tempalte lib
 
 ## Workflow
+ Main ->middleware -> defs -> handler ->dbops -> response
  handler -> validation (request, user) -> business logic -> reponse
 
 ## API Design
