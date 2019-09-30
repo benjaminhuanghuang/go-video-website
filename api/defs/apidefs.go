@@ -18,3 +18,8 @@ type Comment struct {
 	VideoId string
 	Content string
 }
+
+type SimpleSession struct {
+	Username string
+	TTL      int64
+}
