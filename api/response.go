@@ -8,7 +8,7 @@ import (
 	"./defs"
 )
 
-func sendErrorRessponse(w http.ResponseWriter, errResp defs.ErrResponse) {
+func sendErrorRessponse(w http.ResponseWriter, errResp defs.ErrorResponse) {
 	w.WriteHeader(errResp.HttpSC)
 
 	resStr, _ := json.Marshal(&errResp.Error)

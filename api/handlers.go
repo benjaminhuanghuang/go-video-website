@@ -24,7 +24,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		return
 	}
 
-	if err := dbops.AddUserCredential(ubody.Username, ubody.Pwd); err != nil {
+	if err := dbops.AddUserCredential(ubody.Username, ubody.Password); err != nil {
 		sendErrorRessponse(w, defs.ErrorDBError)
 		return
 	}
@@ -35,9 +35,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if resp, err := json.Marshal(su); err != nil {
 		sendErrorRessponse(w, defs.ErrorInternalFaults)
 		return
+	} else {
+		sendNormalRessponse(w, string(resp), 201)
 	}
-	sendNormalRessponse(w, string(resp), 201)
-
 }
 
 func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {

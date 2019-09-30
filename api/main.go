@@ -16,10 +16,10 @@ func NewMiddleWareHandler(r *httprouter.Router) http.Handler {
 	return m
 }
 
-func (m middleWareHandler) ServerHTTP(w http.ResponseWriter, r *http.ReadRequest) {
+func (m middleWareHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// check session
-	validateUserSession()
-	m.r.ServerHTTP(w, r)
+	validateUserSession(r)
+	m.r.ServeHTTP(w, r)
 }
 
 func RegisterHandlers() *httprouter.Router {
@@ -34,6 +34,6 @@ func RegisterHandlers() *httprouter.Router {
 
 func main() {
 	r := RegisterHandlers()
-
-	http.ListenAndServe(":8888", r)
+	mh := NewMiddleWareHandler(r)
+	http.ListenAndServe(":8888", mh)
 }
