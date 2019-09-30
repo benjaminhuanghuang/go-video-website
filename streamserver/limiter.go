@@ -4,19 +4,19 @@ import (
 	"log"
 )
 
-type ConnLimiter struct {
+type ConnectionLimiter struct {
 	concurrentConn int
 	bucket         chan int
 }
 
-func NewConnLimiter(cc int) *ConnLimiter {
-	return &ConnLimiter{
+func NewConnLimiter(cc int) *ConnectionLimiter {
+	return &ConnectionLimiter{
 		concurrentConn: cc,
 		bucket:         make(chan int, cc),
 	}
 }
 
-func (cl *ConnLimiter) GetConn() bool {
+func (cl *ConnectionLimiter) GetConn() bool {
 	if len(cl.bucket) >= cl.concurrentConn {
 		log.Printf("Reached the rate limitation.")
 		return false
@@ -26,7 +26,7 @@ func (cl *ConnLimiter) GetConn() bool {
 	return true
 }
 
-func (cl *ConnLimiter) ReleaseConn() {
+func (cl *ConnectionLimiter) ReleaseConn() {
 	c := <-cl.bucket
 	log.Printf("New connction coming: %d", c)
 }

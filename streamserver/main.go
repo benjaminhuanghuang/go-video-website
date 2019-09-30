@@ -8,7 +8,7 @@ import (
 
 type middleWareHandler struct {
 	r *httprouter.Router
-	l *ConnLimiter
+	l *ConnectionLimiter
 }
 
 func NewMiddleWareHandler(r *httprouter.Router, cc int) http.Handler {
