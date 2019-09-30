@@ -1,6 +1,8 @@
 # Video website Go + MySql
 RESTful API + Front end
-
+## Reference
+- https://www.bilibili.com/video/av68050750/?p=22&t=690
+- https://github.com/Zhenye-Na/video-server-in-Golang
 
 ## Key point
 - native http lib
