@@ -1,8 +1,8 @@
 package defs
 
 type UserCredential struct {
-	Username string `json: "user_name"`
-	Password string `json: "pwd"`
+	Username string `json:"user_name"`
+	Password string `json:"pwd"`
 }
 
 type SignedUp struct {
