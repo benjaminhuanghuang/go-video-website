@@ -35,7 +35,7 @@ CREATE TABLE users (
   id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   login_name VARCHAR(64)  UNIQUE KEY,
   pwd TEXT
-)
+);
 ```
 - video_info
 ```
@@ -45,24 +45,25 @@ CREATE TABLE video_info(
   name TEXT,
   display_ctime TEXT,
   creat_time DATETIME
-)
+);
 ```
 - comments
 ```
 CREATE TABLE comments(
   id VARCHAR(64) PRIMARY KEY NOT NULL,
   video_id VARCHAR(64),
-  author_id UNSIGNED INT,
+  author_id INT UNSIGNED,
   content TEXT,
   time DATETIME
-)
+);
 ```
 - sessions
 ```
 CREATE TABLE sessions(
-  session_id TINYTEXT PRIMARY KEY NOT NULL,
-  login_nname VARCHAR(64)
-)
+  session_id TINYTEXT NOT NULL,
+  TTL TINYTEXT,
+  login_name VARCHAR(64)
+);
 ```
 
 ## MySql
@@ -70,8 +71,11 @@ $ docker pull mysql
 $ docker images
 $ docker run --name ben-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-pass -d mysql:latest
 $ docker ps
+$ docker start <containter id>
+$ docker exec -it <containter id> bach        # connect to container
 
-./mysql -u root -p my-pass
+
+./mysql -uroot -pmy-pass localhost
 use video_server;
 show tables;
 describe users;
@@ -83,5 +87,7 @@ CREATE TABLE users (
   id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   login_name VARCHAR(64)  UNIQUE KEY,
   pwd TEXT
-)
+);
+
+
 
