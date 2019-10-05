@@ -11,7 +11,7 @@ import (
 func sendErrorRessponse(w http.ResponseWriter, errResp defs.ErrorResponse) {
 	w.WriteHeader(errResp.HttpSC)
 
-	resStr, _ := json.Marshal(&errResp.Error)
+	resStr, _ := json.Marshal(&errResp.Error) // to json string
 	io.WriteString(w, string(resStr))
 }
 

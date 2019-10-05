@@ -37,6 +37,7 @@ func streamHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params) 
 
 func uploadHandler(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	r.Body = http.MaxBytesReader(w, r.Body, MAX_UPLOAD_SIZE)
+	// pass form
 	if err := r.ParseMultipartForm(MAX_UPLOAD_SIZE); err != nil {
 		sendErrorResponse(w, http.StatusBadRequest, "File is too big")
 		return

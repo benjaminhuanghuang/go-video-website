@@ -18,7 +18,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	res, _ := ioutil.ReadAll(r.Body)
 
 	ubody := defs.UserCredential{}
-	// json -> UserCredential
+	// convert json -> UserCredential
 	if err := json.Unmarshal(res, &ubody); err != nil {
 		sendErrorRessponse(w, defs.ErrorRequestBodyParseFailed)
 		return

@@ -30,6 +30,7 @@ func RegisterHandlers() *httprouter.Router {
 	return router
 }
 
+// Implement the ServeHTTP
 func (m middleWareHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if !m.l.GetConn() {
 		sendErrorResponse(w, http.StatusTooManyRequests, "Too many requests")
@@ -42,6 +43,6 @@ func (m middleWareHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := RegisterHandlers()
-	mh := NewMiddleWareHandler(r, 2)
+	mh := NewMiddleWareHandler(r, 2) // accept 2 connects
 	http.ListenAndServe(":9000", mh)
 }
